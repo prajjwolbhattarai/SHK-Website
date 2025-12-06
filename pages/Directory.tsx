@@ -1,10 +1,9 @@
-
 import React, { useState, useMemo } from 'react';
 import { Company, CompanyCategory } from '../types';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Search, Phone, Mail, Globe as GlobeIcon, MapPin, Building, User, Wrench } from 'lucide-react';
+import { Search, Phone, Mail, Globe as GlobeIcon, MapPin, Building, User, Award, Star } from 'lucide-react';
 
 interface DirectoryProps {
     companies: Company[];
@@ -20,7 +19,8 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
     const companyCategories: CompanyCategory[] = ['Installateur', 'Handwerker', 'Großhändler', 'Hersteller', 'Dienstleister'];
 
     const filteredCompanies = useMemo(() => {
-        return companies.filter(company => {
+        // 1. Filter by Search and Category
+        const filtered = companies.filter(company => {
             const matchesFilter = activeFilter === 'All' || company.category === activeFilter;
             const matchesSearch = searchTerm === '' ||
                 company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -28,6 +28,21 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                 company.address.city.toLowerCase().includes(searchTerm.toLowerCase());
             return matchesFilter && matchesSearch;
         });
+
+        // 2. Sort by Featured Status (Sponsored -> Featured -> None)
+        return filtered.sort((a, b) => {
+            const statusRank = {
+                'sponsored': 2,
+                'featured': 1,
+                'none': 0
+            };
+            
+            const rankA = statusRank[a.featuredStatus || 'none'];
+            const rankB = statusRank[b.featuredStatus || 'none'];
+
+            return rankB - rankA;
+        });
+
     }, [companies, searchTerm, activeFilter]);
 
     return (
@@ -90,44 +105,72 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
 
                     {/* Company Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {filteredCompanies.map(company => (
-                            <div key={company.id} className="bg-white border border-gray-100 rounded-sm shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col">
-                                <div className="p-6 flex-grow">
-                                    <div className="flex items-start justify-between mb-4">
-                                        <img src={company.logoUrl} alt={`${company.name} Logo`} className="h-16 w-16 object-contain bg-white border p-1 rounded-sm" />
-                                        <span className={`text-[10px] font-bold uppercase tracking-widest text-white px-2 py-1 rounded-sm ${company.category === 'Handwerker' ? 'bg-blue-600' : 'bg-brand-steel'}`}>
-                                            {company.category}
-                                        </span>
-                                    </div>
-                                    <h2 className="text-xl font-display font-bold text-brand-dark mb-2">{company.name}</h2>
-                                    <p className="text-sm text-gray-500 leading-relaxed mb-4">{company.description}</p>
-                                    
-                                    <div className="space-y-2">
-                                        <div className="flex items-center text-xs text-gray-400">
-                                            <MapPin className="w-3 h-3 mr-2 text-brand-copper" />
-                                            {company.address.street}, {company.address.zip} {company.address.city}
-                                        </div>
-                                        {company.contactPerson && (
-                                            <div className="flex items-center text-xs text-gray-400">
-                                                <User className="w-3 h-3 mr-2 text-brand-copper" />
-                                                {company.contactPerson}
+                        {filteredCompanies.map(company => {
+                            const isSponsored = company.featuredStatus === 'sponsored';
+                            const isFeatured = company.featuredStatus === 'featured';
+                            
+                            return (
+                                <div key={company.id} 
+                                    className={`bg-white border rounded-sm shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col relative overflow-hidden ${
+                                        isSponsored ? 'border-brand-copper ring-1 ring-brand-copper/20' : 'border-gray-100'
+                                    }`}
+                                >
+                                    {/* Sponsored / Featured Badges */}
+                                    {isSponsored && (
+                                        <div className="absolute top-0 right-0 z-10">
+                                            <div className="bg-brand-copper text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-sm">
+                                                <Award className="w-3 h-3 mr-1" /> Sponsored
                                             </div>
-                                        )}
+                                        </div>
+                                    )}
+                                    {isFeatured && (
+                                        <div className="absolute top-0 right-0 z-10">
+                                            <div className="bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-sm">
+                                                <Star className="w-3 h-3 mr-1" /> Featured
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Background tint for Sponsored */}
+                                    {isSponsored && <div className="absolute inset-0 bg-brand-copper/5 pointer-events-none"></div>}
+
+                                    <div className="p-6 flex-grow relative z-0">
+                                        <div className="flex items-start justify-between mb-4">
+                                            <img src={company.logoUrl} alt={`${company.name} Logo`} className="h-16 w-16 object-contain bg-white border p-1 rounded-sm" />
+                                            <span className={`text-[10px] font-bold uppercase tracking-widest text-white px-2 py-1 rounded-sm ${company.category === 'Handwerker' ? 'bg-blue-600' : 'bg-brand-steel'}`}>
+                                                {company.category}
+                                            </span>
+                                        </div>
+                                        <h2 className="text-xl font-display font-bold text-brand-dark mb-2">{company.name}</h2>
+                                        <p className="text-sm text-gray-500 leading-relaxed mb-4">{company.description}</p>
+                                        
+                                        <div className="space-y-2">
+                                            <div className="flex items-center text-xs text-gray-400">
+                                                <MapPin className="w-3 h-3 mr-2 text-brand-copper" />
+                                                {company.address.street}, {company.address.zip} {company.address.city}
+                                            </div>
+                                            {company.contactPerson && (
+                                                <div className="flex items-center text-xs text-gray-400">
+                                                    <User className="w-3 h-3 mr-2 text-brand-copper" />
+                                                    {company.contactPerson}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className={`border-t p-4 grid grid-cols-3 gap-2 text-center relative z-0 ${isSponsored ? 'bg-white/50 border-brand-copper/20' : 'bg-gray-50 border-gray-100'}`}>
+                                        <a href={`tel:${company.phone}`} onClick={() => onCompanyClick(company.id)} title="Call" className="flex justify-center items-center p-2 text-gray-500 hover:bg-green-100 hover:text-green-700 rounded-sm transition-colors">
+                                            <Phone className="w-4 h-4" />
+                                        </a>
+                                        <a href={`mailto:${company.email}`} onClick={() => onCompanyClick(company.id)} title="Email" className="flex justify-center items-center p-2 text-gray-500 hover:bg-blue-100 hover:text-blue-700 rounded-sm transition-colors">
+                                            <Mail className="w-4 h-4" />
+                                        </a>
+                                        <a href={company.website} onClick={() => onCompanyClick(company.id)} target="_blank" rel="noopener noreferrer" title="Website" className="flex justify-center items-center p-2 text-gray-500 hover:bg-orange-100 hover:text-brand-copper rounded-sm transition-colors">
+                                            <GlobeIcon className="w-4 h-4" />
+                                        </a>
                                     </div>
                                 </div>
-                                <div className="bg-gray-50 border-t border-gray-100 p-4 grid grid-cols-3 gap-2 text-center">
-                                    <a href={`tel:${company.phone}`} onClick={() => onCompanyClick(company.id)} title="Call" className="flex justify-center items-center p-2 text-gray-500 hover:bg-green-100 hover:text-green-700 rounded-sm transition-colors">
-                                        <Phone className="w-4 h-4" />
-                                    </a>
-                                    <a href={`mailto:${company.email}`} onClick={() => onCompanyClick(company.id)} title="Email" className="flex justify-center items-center p-2 text-gray-500 hover:bg-blue-100 hover:text-blue-700 rounded-sm transition-colors">
-                                        <Mail className="w-4 h-4" />
-                                    </a>
-                                    <a href={company.website} onClick={() => onCompanyClick(company.id)} target="_blank" rel="noopener noreferrer" title="Website" className="flex justify-center items-center p-2 text-gray-500 hover:bg-orange-100 hover:text-brand-copper rounded-sm transition-colors">
-                                        <GlobeIcon className="w-4 h-4" />
-                                    </a>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     {filteredCompanies.length === 0 && (
