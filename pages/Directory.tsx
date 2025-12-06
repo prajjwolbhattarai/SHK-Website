@@ -37,8 +37,9 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                 'none': 0
             };
             
-            const rankA = statusRank[a.featuredStatus || 'none'];
-            const rankB = statusRank[b.featuredStatus || 'none'];
+            // Safe access with fallback to 0
+            const rankA = statusRank[a.featuredStatus as keyof typeof statusRank] || 0;
+            const rankB = statusRank[b.featuredStatus as keyof typeof statusRank] || 0;
 
             return rankB - rankA;
         });
@@ -137,7 +138,7 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                                     <div className="p-6 flex-grow relative z-0">
                                         <div className="flex items-start justify-between mb-4">
                                             <img src={company.logoUrl} alt={`${company.name} Logo`} className="h-16 w-16 object-contain bg-white border p-1 rounded-sm" />
-                                            <span className={`text-[10px] font-bold uppercase tracking-widest text-white px-2 py-1 rounded-sm ${company.category === 'Handwerker' ? 'bg-blue-600' : 'bg-brand-steel'}`}>
+                                            <span className={`text-[10px] font-bold uppercase tracking-widest text-white px-2 py-1 rounded-sm ${company.category === 'Handwerker' ? 'bg-blue-100 text-blue-800' : 'bg-brand-steel'}`}>
                                                 {company.category}
                                             </span>
                                         </div>
