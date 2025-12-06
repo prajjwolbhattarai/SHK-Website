@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Magazine from './pages/Magazine';
@@ -157,8 +158,39 @@ const STATIC_PAGES: Article[] = [
   },
 ];
 
-// Start with an empty directory
-const MOCK_COMPANIES: Company[] = [];
+// Demo data to visualize Featured/Sponsored functionality immediately
+const MOCK_COMPANIES: Company[] = [
+  {
+    id: 'mock-1',
+    name: 'Sanitär Müller GmbH (Demo)',
+    category: 'Installateur',
+    featuredStatus: 'sponsored',
+    logoUrl: 'https://placehold.co/100x100/b45309/ffffff?text=M',
+    description: 'Ihr Premium-Partner für Bad und Heizung in Mannheim. Spezialisiert auf Wärmepumpen und Badsanierung.',
+    contactPerson: 'Hans Müller',
+    phone: '0621 123456',
+    email: 'info@mueller-shk-demo.de',
+    website: 'https://example.com',
+    address: { street: 'Hauptstr. 1', city: 'Mannheim', zip: '68161' },
+    views: 120,
+    clicks: 45
+  },
+  {
+    id: 'mock-2',
+    name: 'Schmidt Großhandel (Demo)',
+    category: 'Großhändler',
+    featuredStatus: 'featured',
+    logoUrl: 'https://placehold.co/100x100/2563eb/ffffff?text=S',
+    description: 'Alles für den Handwerkerbedarf. Große Auswahl an Werkzeugen und Installationsmaterial.',
+    contactPerson: 'Julia Schmidt',
+    phone: '06221 987654',
+    email: 'vertrieb@schmidt-demo.de',
+    website: 'https://example.com',
+    address: { street: 'Industriestr. 5', city: 'Heidelberg', zip: '69115' },
+    views: 80,
+    clicks: 20
+  }
+];
 
 const App: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -205,11 +237,12 @@ const App: React.FC = () => {
         if (data.companies && Array.isArray(data.companies)) {
           const fetchedCompanies: Company[] = data.companies.map((item: any) => {
             // Robustly handle featuredStatus input from Google Sheet (case insensitive)
-            const rawStatus = item.featuredStatus ? String(item.featuredStatus).toLowerCase() : 'none';
+            // Checks for 'featuredStatus', 'featuredstatus', 'FeaturedStatus' or 'Status'
+            const rawStatus = (item.featuredStatus || item.featuredstatus || item.FeaturedStatus || item.status || 'none').toString().toLowerCase();
             const validStatus = ['featured', 'sponsored'].includes(rawStatus) ? (rawStatus as FeaturedStatus) : 'none';
 
             return {
-              id: item.id,
+              id: item.id || `co-${Math.random()}`,
               name: item.name,
               category: item.category,
               featuredStatus: validStatus, 
@@ -228,6 +261,7 @@ const App: React.FC = () => {
               clicks: 0
             };
           });
+          // Merge fetched with mock (or replace if you prefer)
           setCompanies(prev => [...fetchedCompanies, ...prev]);
         }
       } catch (error) {

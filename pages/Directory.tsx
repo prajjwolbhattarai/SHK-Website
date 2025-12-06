@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { Company, CompanyCategory } from '../types';
 import Header from '../components/Header';
@@ -113,39 +114,39 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                             return (
                                 <div key={company.id} 
                                     className={`bg-white border rounded-sm shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col relative overflow-hidden ${
-                                        isSponsored ? 'border-brand-copper ring-1 ring-brand-copper/20' : 'border-gray-100'
+                                        isSponsored ? 'border-brand-copper ring-2 ring-brand-copper/30' : 'border-gray-100'
                                     }`}
                                 >
                                     {/* Sponsored / Featured Badges */}
                                     {isSponsored && (
-                                        <div className="absolute top-0 right-0 z-10">
-                                            <div className="bg-brand-copper text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-sm">
+                                        <div className="absolute top-0 right-0 z-20">
+                                            <div className="bg-brand-copper text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-lg">
                                                 <Award className="w-3 h-3 mr-1" /> Sponsored
                                             </div>
                                         </div>
                                     )}
                                     {isFeatured && (
-                                        <div className="absolute top-0 right-0 z-10">
-                                            <div className="bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-sm">
+                                        <div className="absolute top-0 right-0 z-20">
+                                            <div className="bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-lg">
                                                 <Star className="w-3 h-3 mr-1" /> Featured
                                             </div>
                                         </div>
                                     )}
 
                                     {/* Background tint for Sponsored */}
-                                    {isSponsored && <div className="absolute inset-0 bg-brand-copper/5 pointer-events-none"></div>}
+                                    {isSponsored && <div className="absolute inset-0 bg-gradient-to-br from-brand-copper/5 to-transparent pointer-events-none z-0"></div>}
 
-                                    <div className="p-6 flex-grow relative z-0">
+                                    <div className="p-6 flex-grow relative z-10">
                                         <div className="flex items-start justify-between mb-4">
-                                            <img src={company.logoUrl} alt={`${company.name} Logo`} className="h-16 w-16 object-contain bg-white border p-1 rounded-sm" />
+                                            <img src={company.logoUrl} alt={`${company.name} Logo`} className="h-16 w-16 object-contain bg-white border p-1 rounded-sm shadow-sm" />
                                             <span className={`text-[10px] font-bold uppercase tracking-widest text-white px-2 py-1 rounded-sm ${company.category === 'Handwerker' ? 'bg-blue-100 text-blue-800' : 'bg-brand-steel'}`}>
                                                 {company.category}
                                             </span>
                                         </div>
                                         <h2 className="text-xl font-display font-bold text-brand-dark mb-2">{company.name}</h2>
-                                        <p className="text-sm text-gray-500 leading-relaxed mb-4">{company.description}</p>
+                                        <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3">{company.description}</p>
                                         
-                                        <div className="space-y-2">
+                                        <div className="space-y-2 mt-auto">
                                             <div className="flex items-center text-xs text-gray-400">
                                                 <MapPin className="w-3 h-3 mr-2 text-brand-copper" />
                                                 {company.address.street}, {company.address.zip} {company.address.city}
@@ -158,7 +159,7 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                                             )}
                                         </div>
                                     </div>
-                                    <div className={`border-t p-4 grid grid-cols-3 gap-2 text-center relative z-0 ${isSponsored ? 'bg-white/50 border-brand-copper/20' : 'bg-gray-50 border-gray-100'}`}>
+                                    <div className={`border-t p-4 grid grid-cols-3 gap-2 text-center relative z-10 ${isSponsored ? 'bg-white/80 border-brand-copper/20' : 'bg-gray-50 border-gray-100'}`}>
                                         <a href={`tel:${company.phone}`} onClick={() => onCompanyClick(company.id)} title="Call" className="flex justify-center items-center p-2 text-gray-500 hover:bg-green-100 hover:text-green-700 rounded-sm transition-colors">
                                             <Phone className="w-4 h-4" />
                                         </a>
