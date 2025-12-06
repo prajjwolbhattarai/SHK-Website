@@ -1,13 +1,7 @@
 
+
 export type Language = 'en' | 'de' | 'fr' | 'it' | 'es';
 export type ContentType = 'article' | 'page';
-
-export interface SEOData {
-  score: number;
-  keywords: string[];
-  suggestions: string[];
-  metaDescription: string;
-}
 
 export interface ArticleContent {
   title: string;
@@ -27,7 +21,6 @@ export interface Article extends ArticleContent {
   featured: boolean;
   source?: string; // Name of the source
   sourceUrl?: string; // URL backlink to the source
-  seo?: SEOData;
   views: number;    // Analytics
   shares: number;   // Analytics
   readTime: number; // Analytics (seconds)
