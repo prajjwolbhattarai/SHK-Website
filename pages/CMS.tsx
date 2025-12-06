@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Article, ContentType, Company, CompanyCategory } from '../types';
+import { Article, ContentType, Company, CompanyCategory, FeaturedStatus } from '../types';
 import { 
   Plus, Edit, Trash2, Image as ImageIcon, Sparkles, 
   BarChart, AlertCircle, Save, X, Eye, LogOut, Video,
@@ -82,9 +82,9 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
         ]);
         filename = 'shk_articles_export.csv';
     } else {
-        headers = ['ID', 'Name', 'Category', 'LogoUrl', 'Description', 'ContactPerson', 'Phone', 'Email', 'Website', 'Street', 'City', 'Zip'];
+        headers = ['ID', 'Name', 'Category', 'FeaturedStatus', 'LogoUrl', 'Description', 'ContactPerson', 'Phone', 'Email', 'Website', 'Street', 'City', 'Zip'];
         rows = companies.map(c => [
-            c.id, c.name, c.category, c.logoUrl, c.description, c.contactPerson || '', c.phone, c.email, c.website, c.address.street, c.address.city, c.address.zip
+            c.id, c.name, c.category, c.featuredStatus || 'none', c.logoUrl, c.description, c.contactPerson || '', c.phone, c.email, c.website, c.address.street, c.address.city, c.address.zip
         ]);
         filename = 'shk_directory_export.csv';
     }
@@ -188,6 +188,7 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
   const handleCreateCompany = () => {
     setCurrentCompany({
         id: crypto.randomUUID(), name: '', category: 'Installateur', description: '',
+        featuredStatus: 'none',
         logoUrl: 'https://placehold.co/100x100/f8fafc/0f172a?text=Logo',
         phone: '', email: '', website: '', address: { street: '', city: '', zip: '' },
         views: 0, clicks: 0
@@ -393,6 +394,17 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
               <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Company Name</label>
               <input type="text" value={currentCompany.name || ''} onChange={e => setCurrentCompany(prev => ({...prev, name: e.target.value}))} className="w-full border border-gray-300 rounded-sm p-3 text-lg"/>
             </div>
+            
+            {/* NEW: Featured Status Dropdown */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Promotion Status</label>
+              <select value={currentCompany.featuredStatus || 'none'} onChange={e => setCurrentCompany(prev => ({...prev, featuredStatus: e.target.value as FeaturedStatus}))} className="w-full border border-gray-300 rounded-sm p-3 bg-white">
+                <option value="none">Standard</option>
+                <option value="featured">Featured (Top)</option>
+                <option value="sponsored">Sponsored (Premium)</option>
+              </select>
+            </div>
+
             <div>
               <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Category</label>
               <select value={currentCompany.category} onChange={e => setCurrentCompany(prev => ({...prev, category: e.target.value as CompanyCategory}))} className="w-full border border-gray-300 rounded-sm p-3 bg-white">
@@ -643,11 +655,16 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
             </div>
             <div className="bg-white rounded-sm shadow-sm border">
               <table className="w-full text-left">
-                <thead className="bg-gray-50 text-xs uppercase"><tr><th className="p-4">Name</th><th className="p-4">Category</th><th className="p-4">City</th><th className="p-4">Actions</th></tr></thead>
+                <thead className="bg-gray-50 text-xs uppercase"><tr><th className="p-4">Name</th><th className="p-4">Status</th><th className="p-4">Category</th><th className="p-4">City</th><th className="p-4">Actions</th></tr></thead>
                 <tbody>
                   {companies.map(c => (
                     <tr key={c.id} className="border-b hover:bg-gray-50">
                       <td className="p-4 font-bold">{c.name}</td>
+                      <td className="p-4">
+                          {c.featuredStatus === 'sponsored' && <span className="bg-brand-copper text-white px-2 py-1 rounded-[2px] text-[10px] font-bold uppercase tracking-wide">Sponsored</span>}
+                          {c.featuredStatus === 'featured' && <span className="bg-blue-600 text-white px-2 py-1 rounded-[2px] text-[10px] font-bold uppercase tracking-wide">Featured</span>}
+                          {(!c.featuredStatus || c.featuredStatus === 'none') && <span className="text-gray-400 text-xs">-</span>}
+                      </td>
                       <td className="p-4"><span className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${c.category === 'Handwerker' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}>{c.category}</span></td>
                       <td className="p-4">{c.address.city}</td>
                       <td className="p-4 space-x-2">
@@ -657,7 +674,7 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
                     </tr>
                   ))}
                   {companies.length === 0 && (
-                      <tr><td colSpan={4} className="p-8 text-center text-gray-400">No companies found.</td></tr>
+                      <tr><td colSpan={5} className="p-8 text-center text-gray-400">No companies found.</td></tr>
                   )}
                 </tbody>
               </table>
