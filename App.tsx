@@ -3,7 +3,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Magazine from './pages/Magazine';
 import ArticleReader from './pages/ArticleReader';
 import Directory from './pages/Directory';
-import { Article, Company } from './types';
+import { Article, Company, FeaturedStatus } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 
 // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
@@ -244,7 +244,7 @@ const STATIC_PAGES: Article[] = [
       <h3>Anfrage per E-Mail, Telefon oder Telefax</h3>
       <p>Wenn Sie uns per E-Mail, Telefon oder Telefax kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten (Name, Anfrage) zum Zwecke der Bearbeitung Ihres Anliegens bei uns gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>
       <p>Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist. In allen übrigen Fällen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sofern diese abgefragt wurde; die Einwilligung ist jederzeit widerrufbar.</p>
-      <p>Die von Ihnen an uns per Kontaktanfragen übersandten Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt (z. B. nach abgeschlossener Bearbeitung Ihres Anliegens). Zwingende gesetzliche Bestimmungen – insbesondere gesetzliche Aufbewahrungsfristen – bleiben unberührt.</p>
+      <p>Die von Ihnen an uns per Kontaktanfragen übersandten Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt (z. B. nach abgeschlossener Bearbeitung Ihrer Anliegens). Zwingende gesetzliche Bestimmungen – insbesondere gesetzliche Aufbewahrungsfristen – bleiben unberührt.</p>
 
       <h3>Kommunikation via WhatsApp</h3>
       <p>Für die Kommunikation mit unseren Kunden und sonstigen Dritten nutzen wir unter anderem den Instant-Messaging-Dienst WhatsApp. Anbieter ist die WhatsApp Ireland Limited, 4 Grand Canal Square, Grand Canal Harbour, Dublin 2, Irland.</p>
@@ -335,6 +335,7 @@ const App: React.FC = () => {
             id: item.id,
             name: item.name,
             category: item.category,
+            featuredStatus: (item.featuredStatus as FeaturedStatus) || 'none', // NEW Field mapping
             logoUrl: item.logoUrl || 'https://placehold.co/100x100?text=Logo',
             description: item.description,
             contactPerson: item.contactPerson,
