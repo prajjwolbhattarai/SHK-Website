@@ -35,11 +35,13 @@ export interface CMSState {
 }
 
 export type CompanyCategory = 'Installateur' | 'Großhändler' | 'Hersteller' | 'Dienstleister' | 'Handwerker';
+export type FeaturedStatus = 'none' | 'featured' | 'sponsored';
 
 export interface Company {
   id: string;
   name: string;
   category: CompanyCategory;
+  featuredStatus: FeaturedStatus; // New field for ranking
   logoUrl: string;
   description: string;
   contactPerson?: string; // New field
