@@ -150,7 +150,7 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ articles, categories }) =
                <div className="hidden md:block w-px h-4 bg-gray-300"></div>
                <div className="flex items-center">
                  <Clock className="w-4 h-4 mr-2 text-brand-copper" />
-                 <span className="uppercase tracking-wide text-xs">{new Date(article.publishedAt).toLocaleDateString()}</span>
+                 <span className="uppercase tracking-wide text-xs">{new Date(article.publishedAt).toLocaleDateString('de-DE')}</span>
                </div>
                <div className="hidden md:block w-px h-4 bg-gray-300"></div>
                <div className="flex items-center text-gray-400 uppercase tracking-wide text-xs">
