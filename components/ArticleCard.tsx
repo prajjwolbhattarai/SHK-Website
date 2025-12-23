@@ -26,7 +26,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'standard'
     return (
       <div 
         onClick={handleRead}
-        className="group relative w-full h-[600px] overflow-hidden rounded-sm shadow-2xl cursor-pointer"
+        className="group relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-sm shadow-2xl cursor-pointer"
       >
         <img 
           src={article.imageUrl} 
@@ -38,31 +38,31 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'standard'
         
         {/* Video Badge */}
         {article.videoUrl && (
-          <div className="absolute top-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 text-white p-4 rounded-full animate-pulse shadow-lg z-10 group-hover:scale-110 transition-transform">
-             <PlayCircle className="w-8 h-8" />
+          <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-white/10 backdrop-blur-md border border-white/20 text-white p-3 md:p-4 rounded-full animate-pulse shadow-lg z-10 group-hover:scale-110 transition-transform">
+             <PlayCircle className="w-6 h-6 md:w-8 md:h-8" />
           </div>
         )}
 
-        <div className="absolute bottom-0 left-0 p-8 md:p-12 text-white max-w-5xl z-20">
-          <div className="overflow-hidden mb-6">
-            <span className="inline-block uppercase tracking-[0.2em] text-[10px] font-bold bg-brand-copper text-white px-3 py-1.5 rounded-sm transform translate-y-0 transition-transform group-hover:-translate-y-1">
+        <div className="absolute bottom-0 left-0 p-6 md:p-12 text-white max-w-5xl z-20">
+          <div className="overflow-hidden mb-4 md:mb-6">
+            <span className="inline-block uppercase tracking-[0.2em] text-[9px] md:text-[10px] font-bold bg-brand-copper text-white px-2.5 py-1.5 rounded-sm transform translate-y-0 transition-transform group-hover:-translate-y-1">
               {article.category}
             </span>
           </div>
           
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-6 leading-none tracking-tight group-hover:text-gray-100 transition-colors">
+          <h2 className="text-2xl md:text-5xl lg:text-6xl font-display font-black mb-4 md:mb-6 leading-tight md:leading-none tracking-tight group-hover:text-gray-100 transition-colors line-clamp-3">
             {title}
           </h2>
           
-          <p className="text-gray-300 mb-8 line-clamp-2 max-w-2xl font-light text-lg md:text-xl leading-relaxed opacity-90 group-hover:opacity-100 transition-opacity">
+          <p className="text-gray-300 mb-6 md:mb-8 line-clamp-2 max-w-2xl font-light text-base md:text-xl leading-relaxed opacity-90 group-hover:opacity-100 transition-opacity">
             {summary}
           </p>
           
-          <div className="flex items-center space-x-6 text-xs font-bold text-gray-400 uppercase tracking-widest border-t border-white/10 pt-6">
-             <span className="text-brand-copper">{article.author}</span>
-             <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
-             <span className="flex items-center">
-               <Clock className="w-3 h-3 mr-2" />
+          <div className="flex items-center space-x-4 md:space-x-6 text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest border-t border-white/10 pt-4 md:pt-6">
+             <span className="text-brand-copper truncate max-w-[100px] md:max-w-none">{article.author}</span>
+             <span className="w-1 h-1 bg-gray-600 rounded-full shrink-0"></span>
+             <span className="flex items-center shrink-0">
+               <Clock className="w-3 h-3 mr-1 md:mr-2" />
                {new Date(article.publishedAt).toLocaleDateString('en-GB')}
              </span>
              <div className="ml-auto hidden md:flex items-center text-white group-hover:translate-x-2 transition-transform duration-300">
@@ -82,8 +82,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'standard'
           alt={title} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute top-4 left-4">
-            <span className="bg-white/90 backdrop-blur-sm text-brand-dark text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 shadow-sm rounded-sm">
+        <div className="absolute top-3 left-3 md:top-4 md:left-4">
+            <span className="bg-white/90 backdrop-blur-sm text-brand-dark text-[9px] md:text-[10px] font-bold uppercase tracking-widest px-2.5 py-1.5 shadow-sm rounded-sm">
                 {article.category}
             </span>
         </div>
@@ -93,28 +93,28 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'standard'
 
         {article.videoUrl && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-             <div className="bg-brand-copper/90 p-3 rounded-full shadow-lg transform scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 delay-75">
-                <PlayCircle className="w-6 h-6 text-white" />
+             <div className="bg-brand-copper/90 p-2.5 md:p-3 rounded-full shadow-lg transform scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 delay-75">
+                <PlayCircle className="w-5 h-5 md:w-6 md:h-6 text-white" />
              </div>
           </div>
         )}
       </div>
       
-      <div className="flex flex-col flex-grow p-6 relative">
-        <div className="mb-4 flex items-center text-[10px] font-bold text-gray-400 uppercase tracking-wider space-x-2">
+      <div className="flex flex-col flex-grow p-5 md:p-6 relative">
+        <div className="mb-3 md:mb-4 flex items-center text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-wider space-x-2">
            <span>{new Date(article.publishedAt).toLocaleDateString('en-GB')}</span>
            <span className="w-px h-3 bg-gray-300"></span>
            <span className="text-brand-copper">{article.readTime ? Math.ceil(article.readTime / 60) : 5} min read</span>
         </div>
 
-        <h3 className="text-xl font-display font-bold text-brand-dark mb-3 leading-snug group-hover:text-brand-copper transition-colors">
+        <h3 className="text-lg md:text-xl font-display font-bold text-brand-dark mb-2.5 md:mb-3 leading-snug group-hover:text-brand-copper transition-colors line-clamp-2">
           {title}
         </h3>
-        <p className="text-brand-steel text-sm line-clamp-3 mb-6 flex-grow leading-relaxed">
+        <p className="text-brand-steel text-sm line-clamp-3 mb-5 md:mb-6 flex-grow leading-relaxed">
           {summary}
         </p>
         
-        <div className="mt-auto pt-4 border-t border-gray-50 flex items-center text-xs font-bold uppercase tracking-wider text-brand-dark group-hover:text-brand-copper transition-colors">
+        <div className="mt-auto pt-4 border-t border-gray-50 flex items-center text-[10px] md:text-xs font-bold uppercase tracking-wider text-brand-dark group-hover:text-brand-copper transition-colors">
            {article.videoUrl ? t('article.watch_video') : t('article.read_story')} 
            <ChevronRight className="w-3 h-3 ml-1 transform group-hover:translate-x-1 transition-transform" />
         </div>

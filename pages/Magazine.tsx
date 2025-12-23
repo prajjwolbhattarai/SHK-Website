@@ -66,8 +66,6 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
     setNewsletterStatus('loading');
 
     try {
-      // Use no-cors mode to send data to Google Apps Script without CORS errors
-      // Note: We won't get a readable JSON response in no-cors mode, but the data will be sent.
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -76,8 +74,6 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
         },
         body: JSON.stringify({ type: 'newsletter', email: email }),
       });
-
-      // Since we use no-cors, we assume success if no network error occurred
       setNewsletterStatus('success');
       setEmail('');
     } catch (error) {
@@ -101,17 +97,14 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
   }
 
   // --- FEATURED STORIES LOGIC ---
-  // 1. Get all articles marked as featured
   const featuredArticles = !searchQuery && activeCategory === 'All' 
     ? displayArticles.filter(a => a.featured) 
     : [];
 
-  // 2. If no articles are explicitly featured in sheet, fallback to the very first article
   const finalFeaturedArticles = featuredArticles.length > 0 
     ? featuredArticles 
     : (!searchQuery && activeCategory === 'All' && displayArticles.length > 0 ? [displayArticles[0]] : []);
   
-  // 3. The Grid should NOT show the articles currently displayed in the slider/hero
   let gridArticles = displayArticles;
   if (finalFeaturedArticles.length > 0) {
       const featuredIds = finalFeaturedArticles.map(a => a.id);
@@ -141,7 +134,7 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
       <main>
         {/* HERO SECTION - Only on Home and No Search */}
         {activeCategory === 'All' && !searchQuery && (
-          <div className="relative w-full h-[650px] flex items-center bg-brand-dark overflow-hidden group">
+          <div className="relative w-full h-[550px] md:h-[650px] flex items-center bg-brand-dark overflow-hidden group">
             
             {/* Background Image with Zoom Effect */}
             <div className="absolute inset-0 z-0">
@@ -156,80 +149,78 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
 
             {/* Content */}
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="max-w-3xl space-y-8 animate-fade-in-up">
+              <div className="max-w-3xl space-y-6 md:space-y-8 animate-fade-in-up">
                  
-                 <div className="flex items-center space-x-3 mb-6">
-                    <div className="h-px w-12 bg-brand-copper"></div>
-                    <span className="text-brand-copper font-bold uppercase tracking-[0.3em] text-[10px]">The Regional Authority</span>
+                 <div className="flex items-center space-x-3 mb-4 md:mb-6">
+                    <div className="h-px w-8 md:w-12 bg-brand-copper"></div>
+                    <span className="text-brand-copper font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] text-[9px] md:text-[10px]">The Regional Authority</span>
                  </div>
 
-                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-white leading-[0.9] tracking-tighter">
+                 <h1 className="text-4xl md:text-7xl lg:text-8xl font-display font-black text-white leading-tight md:leading-[0.9] tracking-tighter">
                     {t('hero.title')}
                  </h1>
                  
-                 <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed max-w-xl border-l-4 border-white/10 pl-6">
+                 <p className="text-lg md:text-2xl text-gray-300 font-light leading-relaxed max-w-xl border-l-4 border-white/10 pl-4 md:pl-6">
                     {t('hero.subtitle')}
                  </p>
 
-                 <div className="flex flex-wrap gap-4 pt-8">
-                    <button onClick={() => window.scrollTo({ top: 800, behavior: 'smooth'})} className="bg-brand-copper text-white px-10 py-4 text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-brand-dark transition-all duration-300 rounded-sm shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                 <div className="flex flex-col sm:flex-row gap-4 pt-6 md:pt-8">
+                    <button onClick={() => window.scrollTo({ top: 800, behavior: 'smooth'})} className="bg-brand-copper text-white px-8 md:px-10 py-3.5 md:py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-brand-dark transition-all duration-300 rounded-sm shadow-xl hover:shadow-2xl">
                        {t('hero.read_latest')}
                     </button>
-                    <Link to="/article/page-submit" className="group px-10 py-4 text-xs font-bold uppercase tracking-widest text-white border border-white/30 hover:bg-white/10 transition-all duration-300 rounded-sm backdrop-blur-sm flex items-center">
+                    <Link to="/article/page-submit" className="group px-8 md:px-10 py-3.5 md:py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest text-white border border-white/30 hover:bg-white/10 transition-all duration-300 rounded-sm backdrop-blur-sm flex items-center justify-center">
                        {t('hero.submit_story')} <ArrowRight className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                     </Link>
                  </div>
               </div>
             </div>
 
-            <div className="absolute bottom-12 right-12 hidden lg:block z-10">
-               <div className="flex flex-col items-end space-y-3 opacity-30">
-                  <div className="w-48 h-[2px] bg-white"></div>
-                  <div className="w-24 h-[2px] bg-white"></div>
-                  <div className="w-12 h-[2px] bg-brand-copper opacity-100"></div>
-                  <span className="text-white text-[10px] font-bold uppercase tracking-widest mt-2">Est. 2025 • Rhein-Neckar</span>
+            <div className="absolute bottom-8 right-8 hidden md:block z-10">
+               <div className="flex flex-col items-end space-y-2 md:space-y-3 opacity-30">
+                  <div className="w-32 md:w-48 h-[1px] md:h-[2px] bg-white"></div>
+                  <div className="w-16 md:w-24 h-[1px] md:h-[2px] bg-white"></div>
+                  <div className="w-8 md:w-12 h-[1px] md:h-[2px] bg-brand-copper opacity-100"></div>
+                  <span className="text-white text-[9px] md:text-[10px] font-bold uppercase tracking-widest mt-1 md:mt-2">Est. 2025 • Rhein-Neckar</span>
                </div>
             </div>
           </div>
         )}
 
         {/* Content Container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
           
           {searchQuery && (
-              <div className="mb-12">
-                  <h2 className="text-3xl font-display font-bold text-brand-dark mb-4">Search Results: "{searchQuery}"</h2>
-                  <p className="text-brand-steel">{displayArticles.length} articles found.</p>
+              <div className="mb-8 md:mb-12">
+                  <h2 className="text-2xl md:text-3xl font-display font-bold text-brand-dark mb-2 md:mb-4">Search Results: "{searchQuery}"</h2>
+                  <p className="text-brand-steel text-sm md:text-base">{displayArticles.length} articles found.</p>
               </div>
           )}
 
-          {/* Featured Stories Section (Carousel or Single) */}
+          {/* Featured Stories Section */}
           {finalFeaturedArticles.length > 0 && (
-            <section className="mb-24 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              <div className="flex items-center space-x-6 mb-10">
+            <section className="mb-16 md:mb-24 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              <div className="flex items-center space-x-4 md:space-x-6 mb-8 md:mb-10">
                  <div className="h-px bg-gray-200 flex-grow"></div>
-                 <span className="text-brand-steel uppercase tracking-[0.2em] text-xs font-bold">
+                 <span className="text-brand-steel uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold whitespace-nowrap">
                     {finalFeaturedArticles.length > 1 ? 'Top Stories' : t('section.top_story')}
                  </span>
                  <div className="h-px bg-gray-200 flex-grow"></div>
               </div>
-              
-              {/* Use the Slider Component */}
               <FeaturedCarousel articles={finalFeaturedArticles} />
             </section>
           )}
 
           <section className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <div className="flex items-end justify-between mb-12 border-b border-gray-200 pb-6">
-              <h2 className="text-3xl font-display font-bold text-brand-dark">
+            <div className="flex items-end justify-between mb-8 md:mb-12 border-b border-gray-200 pb-4 md:pb-6">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-brand-dark">
                 {activeCategory === 'All' ? t('section.latest_news') : (t(`cat.${activeCategory}`) || activeCategory)}
               </h2>
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest hidden sm:block">
+              <span className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest hidden sm:block">
                 {gridArticles.length} Stories
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
               {gridArticles.slice(0, displayedCount).map((article, idx) => (
                 <div key={article.id} style={{ animationDelay: `${0.1 * idx}s` }} className="animate-fade-in-up">
                   <ArticleCard article={article} />
@@ -238,19 +229,19 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
             </div>
             
             {gridArticles.length === 0 && (
-               <div className="text-center py-32 bg-gray-50 rounded-sm border border-dashed border-gray-300">
-                  <p className="text-brand-steel font-medium text-lg">{searchQuery ? t('search.no_results') : 'No stories found.'}</p>
+               <div className="text-center py-20 md:py-32 bg-gray-50 rounded-sm border border-dashed border-gray-300 px-6">
+                  <p className="text-brand-steel font-medium text-base md:text-lg">{searchQuery ? t('search.no_results') : 'No stories found.'}</p>
                   {searchQuery && (
-                      <button onClick={() => setSearchQuery('')} className="mt-4 text-brand-copper font-bold uppercase text-xs underline">Clear Search</button>
+                      <button onClick={() => setSearchQuery('')} className="mt-4 text-brand-copper font-bold uppercase text-[10px] md:text-xs underline">Clear Search</button>
                   )}
                </div>
             )}
 
             {gridArticles.length > displayedCount && (
-                <div className="mt-16 text-center">
+                <div className="mt-12 md:mt-16 text-center">
                     <button 
                         onClick={() => setDisplayedCount(prev => prev + (activeCategory === 'All' ? 6 : 9))}
-                        className="inline-flex items-center bg-white border border-gray-200 px-8 py-3 text-xs font-bold uppercase tracking-widest text-brand-dark hover:border-brand-copper hover:text-brand-copper transition-colors shadow-sm"
+                        className="inline-flex items-center bg-white border border-gray-200 px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold uppercase tracking-widest text-brand-dark hover:border-brand-copper hover:text-brand-copper transition-colors shadow-sm"
                     >
                         {activeCategory === 'All' ? t('btn.show_more') : t('btn.load_more')} <ChevronDown className="ml-2 w-4 h-4" />
                     </button>
@@ -259,28 +250,28 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
           </section>
 
           {activeCategory === 'All' && !searchQuery && (
-              <section className="mt-32 pt-16 border-t border-gray-100 animate-fade-in">
-                  <div className="flex items-center justify-between mb-10">
-                      <h2 className="text-2xl font-display font-bold text-brand-dark flex items-center">
-                          <Layers className="w-6 h-6 mr-3 text-brand-copper" />
+              <section className="mt-20 md:mt-32 pt-12 md:pt-16 border-t border-gray-100 animate-fade-in">
+                  <div className="flex items-center justify-between mb-8 md:mb-10">
+                      <h2 className="text-xl md:text-2xl font-display font-bold text-brand-dark flex items-center">
+                          <Layers className="w-5 h-5 md:w-6 md:h-6 mr-3 text-brand-copper" />
                           {t('section.explore_categories')}
                       </h2>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                       {categoryCards.map((cat, idx) => (
                           <div 
                               key={cat.id} 
                               onClick={() => handleCategoryClick(cat.id)}
-                              className="group relative h-64 rounded-sm overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
+                              className="group relative h-48 md:h-64 rounded-sm overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
                           >
                               <img src={cat.image} alt={cat.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                               <div className="absolute inset-0 bg-brand-dark/60 group-hover:bg-brand-dark/40 transition-colors duration-500"></div>
-                              <div className="absolute inset-0 p-8 flex flex-col justify-end items-start">
-                                  <span className="text-xs text-white/80 font-bold uppercase tracking-wider mb-2">{cat.count} Stories</span>
-                                  <h3 className="text-2xl font-display font-bold text-white mb-4 group-hover:translate-x-2 transition-transform">{cat.title}</h3>
+                              <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end items-start">
+                                  <span className="text-[9px] md:text-xs text-white/80 font-bold uppercase tracking-wider mb-1 md:mb-2">{cat.count} Stories</span>
+                                  <h3 className="text-xl md:text-2xl font-display font-bold text-white mb-2 md:mb-4 group-hover:translate-x-2 transition-transform">{cat.title}</h3>
                                   <div className="opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-4 group-hover:translate-y-0 duration-300">
-                                      <span className="inline-flex items-center text-xs font-bold text-brand-copper uppercase tracking-widest bg-white px-4 py-2 rounded-sm">
+                                      <span className="inline-flex items-center text-[9px] md:text-xs font-bold text-brand-copper uppercase tracking-widest bg-white px-3 md:px-4 py-2 rounded-sm">
                                           {t('btn.view_category')} <ArrowRight className="w-3 h-3 ml-2" />
                                       </span>
                                   </div>
@@ -294,18 +285,18 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
         </div>
 
         {activeCategory === 'All' && !searchQuery && (
-            <section className="bg-white py-24 border-y border-gray-100">
+            <section className="bg-white py-16 md:py-24 border-y border-gray-100">
             <div className="max-w-7xl mx-auto px-4 text-center">
-                <div className="inline-flex justify-center items-center p-4 bg-brand-surface rounded-full mb-8">
-                <MapPin className="w-8 h-8 text-brand-copper" />
+                <div className="inline-flex justify-center items-center p-3 md:p-4 bg-brand-surface rounded-full mb-6 md:mb-8">
+                <MapPin className="w-6 h-6 md:w-8 md:h-8 text-brand-copper" />
                 </div>
-                <h2 className="text-3xl font-display font-bold text-brand-dark mb-6">{t('section.trust_title')}</h2>
-                <p className="text-brand-steel text-lg max-w-2xl mx-auto mb-16 leading-relaxed">
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-brand-dark mb-4 md:mb-6">{t('section.trust_title')}</h2>
+                <p className="text-brand-steel text-base md:text-lg max-w-2xl mx-auto mb-10 md:mb-16 leading-relaxed">
                 {t('section.trust_text')}
                 </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 opacity-50 grayscale mix-blend-multiply">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 opacity-50 grayscale mix-blend-multiply">
                     {['HANDWERK PRO', 'SHK VERBAND', 'IHK RHEIN-NECKAR', 'ENERGIE SÜD'].map((logo, i) => (
-                    <div key={i} className="flex items-center justify-center font-display font-black text-2xl text-gray-300 border-2 border-dashed border-gray-200 p-8 rounded-sm hover:border-brand-copper hover:text-brand-copper hover:opacity-100 transition-all cursor-default">
+                    <div key={i} className="flex items-center justify-center font-display font-black text-xl md:text-2xl text-gray-300 border-2 border-dashed border-gray-200 p-6 md:p-8 rounded-sm hover:border-brand-copper hover:text-brand-copper hover:opacity-100 transition-all cursor-default">
                         {logo}
                     </div>
                     ))}
@@ -315,61 +306,61 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
         )}
 
         {/* Newsletter Section */}
-        <section className="py-24 px-4 bg-brand-surface">
+        <section className="py-12 md:py-24 px-4 bg-brand-surface">
           <div className="max-w-6xl mx-auto bg-brand-dark rounded-sm overflow-hidden shadow-2xl relative">
-             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-copper/20 rounded-full blur-[120px] transform translate-x-1/2 -translate-y-1/2"></div>
+             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-copper/20 rounded-full blur-[120px] transform translate-x-1/2 -translate-y-1/2 hidden md:block"></div>
              
-             <div className="relative z-10 grid md:grid-cols-2 gap-12 p-12 md:p-20 items-center">
-                <div className="text-left space-y-6">
-                   <div className="flex items-center space-x-3 text-brand-copper mb-2">
-                      <Mail className="w-6 h-6" />
-                      <span className="text-xs font-bold uppercase tracking-widest">Weekly Digest</span>
+             <div className="relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-20 items-center">
+                <div className="text-left space-y-4 md:space-y-6">
+                   <div className="flex items-center space-x-3 text-brand-copper mb-1 md:mb-2">
+                      <Mail className="w-5 h-5 md:w-6 md:h-6" />
+                      <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">Weekly Digest</span>
                    </div>
-                   <h2 className="text-4xl font-display font-bold text-white leading-tight">{t('newsletter.title')}</h2>
-                   <p className="text-gray-400 text-lg leading-relaxed">
+                   <h2 className="text-3xl md:text-4xl font-display font-bold text-white leading-tight">{t('newsletter.title')}</h2>
+                   <p className="text-gray-400 text-base md:text-lg leading-relaxed">
                      {t('newsletter.text')}
                    </p>
-                   <div className="space-y-3 pt-2">
+                   <div className="space-y-2 md:space-y-3 pt-2">
                       {['No spam, ever', 'Weekly curated news', 'Unsubscribe anytime'].map((item, i) => (
-                        <div key={i} className="flex items-center text-sm text-gray-500">
+                        <div key={i} className="flex items-center text-xs md:text-sm text-gray-500">
                           <CheckCircle className="w-4 h-4 text-brand-copper mr-2" /> {item}
                         </div>
                       ))}
                    </div>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-sm p-8 rounded-sm border border-white/10">
+                <div className="bg-white/5 backdrop-blur-sm p-6 md:p-8 rounded-sm border border-white/10">
                    {newsletterStatus === 'success' ? (
-                       <div className="text-center py-8">
-                           <CheckCircle className="w-12 h-12 text-brand-copper mx-auto mb-4" />
-                           <h3 className="text-white font-bold text-xl mb-2">Subscribed!</h3>
-                           <p className="text-gray-400 text-sm">Thank you for joining our community.</p>
+                       <div className="text-center py-6 md:py-8">
+                           <CheckCircle className="w-10 h-10 md:w-12 md:h-12 text-brand-copper mx-auto mb-4" />
+                           <h3 className="text-white font-bold text-lg md:text-xl mb-2">Subscribed!</h3>
+                           <p className="text-gray-400 text-xs md:text-sm">Thank you for joining our community.</p>
                        </div>
                    ) : (
                        <form className="flex flex-col gap-4" onSubmit={handleNewsletterSubmit}>
                          <div className="space-y-2">
-                           <label className="text-xs font-bold text-gray-400 uppercase ml-1">Work Email</label>
+                           <label className="text-[10px] md:text-xs font-bold text-gray-400 uppercase ml-1">Work Email</label>
                            <input 
                              type="email" 
                              required
                              value={email}
                              onChange={(e) => setEmail(e.target.value)}
                              placeholder={t('newsletter.placeholder')} 
-                             className="w-full px-6 py-4 bg-white/10 border border-white/10 rounded-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-copper focus:bg-white/20 transition-all"
+                             className="w-full px-4 md:px-6 py-3.5 md:py-4 bg-white/10 border border-white/10 rounded-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-copper focus:bg-white/20 transition-all text-sm"
                            />
                          </div>
                          <button 
                             disabled={newsletterStatus === 'loading'}
-                            className="w-full bg-brand-copper text-white px-6 py-4 font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-brand-dark transition-all rounded-sm shadow-lg hover:shadow-xl mt-2 flex justify-center items-center"
+                            className="w-full bg-brand-copper text-white px-6 py-3.5 md:py-4 font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-white hover:text-brand-dark transition-all rounded-sm shadow-lg hover:shadow-xl mt-2 flex justify-center items-center"
                          >
                            {newsletterStatus === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : t('newsletter.button')}
                          </button>
                          {newsletterStatus === 'error' && (
-                             <div className="flex items-center text-red-400 text-xs mt-2 justify-center">
+                             <div className="flex items-center text-red-400 text-[10px] md:text-xs mt-2 justify-center">
                                  <AlertCircle className="w-3 h-3 mr-1" /> Something went wrong. Try again.
                              </div>
                          )}
-                         <p className="text-center text-[10px] text-gray-600 mt-4 uppercase tracking-wide opacity-60">{t('newsletter.disclaimer')}</p>
+                         <p className="text-center text-[9px] md:text-[10px] text-gray-600 mt-4 uppercase tracking-wide opacity-60">{t('newsletter.disclaimer')}</p>
                        </form>
                    )}
                 </div>

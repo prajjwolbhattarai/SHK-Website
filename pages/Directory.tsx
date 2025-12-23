@@ -38,7 +38,6 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                 'none': 0
             };
             
-            // Safe access with fallback to 0
             const rankA = statusRank[a.featuredStatus as keyof typeof statusRank] || 0;
             const rankB = statusRank[b.featuredStatus as keyof typeof statusRank] || 0;
 
@@ -53,33 +52,33 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
 
             <main>
                 {/* Directory Header */}
-                <div className="bg-brand-dark text-white py-20 text-center">
+                <div className="bg-brand-dark text-white py-12 md:py-20 text-center">
                     <div className="max-w-4xl mx-auto px-4">
-                        <Building className="w-16 h-16 mx-auto text-brand-copper mb-6" />
-                        <h1 className="text-5xl font-display font-bold mb-4">{t('directory.title')}</h1>
-                        <p className="text-xl text-gray-300">{t('directory.subtitle')}</p>
+                        <Building className="w-12 h-12 md:w-16 md:h-16 mx-auto text-brand-copper mb-4 md:mb-6" />
+                        <h1 className="text-3xl md:text-5xl font-display font-bold mb-3 md:mb-4">{t('directory.title')}</h1>
+                        <p className="text-base md:text-xl text-gray-300 px-4">{t('directory.subtitle')}</p>
                     </div>
                 </div>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
                     {/* Filter & Search Bar */}
-                    <div className="sticky top-[85px] z-30 bg-brand-surface/90 backdrop-blur-md p-6 rounded-sm border border-gray-100 shadow-md mb-12 transition-all">
-                        <div className="grid md:grid-cols-12 gap-6 items-center">
+                    <div className="sticky top-[70px] md:top-[85px] z-30 bg-brand-surface/95 backdrop-blur-md p-4 md:p-6 rounded-sm border border-gray-100 shadow-md mb-8 md:mb-12 transition-all">
+                        <div className="grid md:grid-cols-12 gap-4 md:gap-6 items-center">
                             <div className="md:col-span-5 relative">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
                                 <input
                                     type="text"
                                     placeholder={t('directory.search_placeholder')}
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-sm focus:ring-2 focus:ring-brand-copper outline-none shadow-sm"
+                                    className="w-full pl-10 md:pl-12 pr-4 py-2.5 md:py-3 bg-white border border-gray-200 rounded-sm focus:ring-2 focus:ring-brand-copper outline-none shadow-sm text-sm"
                                 />
                             </div>
                             <div className="md:col-span-7">
-                                <div className="flex flex-wrap gap-2 items-center bg-gray-100/50 p-2 rounded-sm border border-gray-200">
+                                <div className="flex flex-wrap gap-1.5 md:gap-2 items-center bg-gray-100/50 p-1.5 md:p-2 rounded-sm border border-gray-200">
                                     <button
                                         onClick={() => setActiveFilter('All')}
-                                        className={`flex-1 min-w-[80px] px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-sm transition-all whitespace-nowrap text-center ${
+                                        className={`flex-1 min-w-[70px] px-2 md:px-3 py-1.5 md:py-2 text-[9px] md:text-xs font-bold uppercase tracking-wider rounded-sm transition-all whitespace-nowrap text-center ${
                                             activeFilter === 'All' 
                                                 ? 'bg-brand-copper text-white shadow-sm' 
                                                 : 'bg-transparent text-gray-500 hover:bg-white hover:text-brand-dark'
@@ -91,7 +90,7 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                                         <button
                                             key={cat}
                                             onClick={() => setActiveFilter(cat)}
-                                            className={`flex-1 min-w-[80px] px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-sm transition-all whitespace-nowrap text-center ${
+                                            className={`flex-1 min-w-[70px] px-2 md:px-3 py-1.5 md:py-2 text-[9px] md:text-xs font-bold uppercase tracking-wider rounded-sm transition-all whitespace-nowrap text-center ${
                                                 activeFilter === cat 
                                                     ? 'bg-brand-copper text-white shadow-sm' 
                                                     : 'bg-transparent text-gray-500 hover:bg-white hover:text-brand-dark'
@@ -106,7 +105,7 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                     </div>
 
                     {/* Company Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {filteredCompanies.map(company => {
                             const isSponsored = company.featuredStatus === 'sponsored';
                             const isFeatured = company.featuredStatus === 'featured';
@@ -120,14 +119,14 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                                     {/* Sponsored / Featured Badges */}
                                     {isSponsored && (
                                         <div className="absolute top-0 right-0 z-20">
-                                            <div className="bg-brand-copper text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-lg">
+                                            <div className="bg-brand-copper text-white text-[9px] md:text-[10px] font-bold uppercase tracking-widest px-2.5 md:px-3 py-1 rounded-bl-sm flex items-center shadow-lg">
                                                 <Award className="w-3 h-3 mr-1" /> Sponsored
                                             </div>
                                         </div>
                                     )}
                                     {isFeatured && (
                                         <div className="absolute top-0 right-0 z-20">
-                                            <div className="bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-sm flex items-center shadow-lg">
+                                            <div className="bg-blue-600 text-white text-[9px] md:text-[10px] font-bold uppercase tracking-widest px-2.5 md:px-3 py-1 rounded-bl-sm flex items-center shadow-lg">
                                                 <Star className="w-3 h-3 mr-1" /> Featured
                                             </div>
                                         </div>
@@ -136,30 +135,30 @@ const Directory: React.FC<DirectoryProps> = ({ companies, categories, onCompanyC
                                     {/* Background tint for Sponsored */}
                                     {isSponsored && <div className="absolute inset-0 bg-gradient-to-br from-brand-copper/5 to-transparent pointer-events-none z-0"></div>}
 
-                                    <div className="p-6 flex-grow relative z-10">
+                                    <div className="p-5 md:p-6 flex-grow relative z-10">
                                         <div className="flex items-start justify-between mb-4">
-                                            <img src={company.logoUrl} alt={`${company.name} Logo`} className="h-16 w-16 object-contain bg-white border p-1 rounded-sm shadow-sm" />
-                                            <span className={`text-[10px] font-bold uppercase tracking-widest text-white px-2 py-1 rounded-sm ${company.category === 'Handwerker' ? 'bg-blue-100 text-blue-800' : 'bg-brand-steel'}`}>
+                                            <img src={company.logoUrl} alt={`${company.name} Logo`} className="h-14 w-14 md:h-16 md:w-16 object-contain bg-white border p-1 rounded-sm shadow-sm" />
+                                            <span className={`text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white px-2 py-1 rounded-sm ${company.category === 'Handwerker' ? 'bg-blue-100 text-blue-800' : 'bg-brand-steel'}`}>
                                                 {company.category}
                                             </span>
                                         </div>
-                                        <h2 className="text-xl font-display font-bold text-brand-dark mb-2">{company.name}</h2>
-                                        <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3">{company.description}</p>
+                                        <h2 className="text-lg md:text-xl font-display font-bold text-brand-dark mb-2 leading-tight">{company.name}</h2>
+                                        <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3 h-[4.5em] md:h-auto">{company.description}</p>
                                         
-                                        <div className="space-y-2 mt-auto">
-                                            <div className="flex items-center text-xs text-gray-400">
-                                                <MapPin className="w-3 h-3 mr-2 text-brand-copper" />
-                                                {company.address.street}, {company.address.zip} {company.address.city}
+                                        <div className="space-y-1.5 md:space-y-2 mt-auto pt-4 border-t border-gray-50 md:border-t-0 md:pt-0">
+                                            <div className="flex items-center text-[10px] md:text-xs text-gray-400">
+                                                <MapPin className="w-3 h-3 mr-2 text-brand-copper shrink-0" />
+                                                <span className="truncate">{company.address.street}, {company.address.zip} {company.address.city}</span>
                                             </div>
                                             {company.contactPerson && (
-                                                <div className="flex items-center text-xs text-gray-400">
-                                                    <User className="w-3 h-3 mr-2 text-brand-copper" />
-                                                    {company.contactPerson}
+                                                <div className="flex items-center text-[10px] md:text-xs text-gray-400">
+                                                    <User className="w-3 h-3 mr-2 text-brand-copper shrink-0" />
+                                                    <span className="truncate">{company.contactPerson}</span>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
-                                    <div className={`border-t p-4 grid grid-cols-3 gap-2 text-center relative z-10 ${isSponsored ? 'bg-white/80 border-brand-copper/20' : 'bg-gray-50 border-gray-100'}`}>
+                                    <div className={`border-t p-3 md:p-4 grid grid-cols-3 gap-2 text-center relative z-10 ${isSponsored ? 'bg-white/80 border-brand-copper/20' : 'bg-gray-50 border-gray-100'}`}>
                                         <a href={`tel:${company.phone}`} onClick={() => onCompanyClick(company.id)} title="Call" className="flex justify-center items-center p-2 text-gray-500 hover:bg-green-100 hover:text-green-700 rounded-sm transition-colors">
                                             <Phone className="w-4 h-4" />
                                         </a>
