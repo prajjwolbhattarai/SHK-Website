@@ -504,7 +504,7 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
                     <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
                         <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Total Views</h3>
                         <div className="flex items-end justify-between">
-                            <span className="text-3xl font-bold text-brand-dark">{totalViews.toLocaleString()}</span>
+                            <span className="text-3xl font-bold text-brand-dark">{totalViews.toLocaleString('en-GB')}</span>
                             <TrendingUp className="w-5 h-5 text-green-500 mb-1" />
                         </div>
                     </div>
@@ -525,7 +525,7 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
                     <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
                         <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Social Shares</h3>
                         <div className="flex items-end justify-between">
-                            <span className="text-3xl font-bold text-brand-dark">{totalShares.toLocaleString()}</span>
+                            <span className="text-3xl font-bold text-brand-dark">{totalShares.toLocaleString('en-GB')}</span>
                             <Share2 className="w-5 h-5 text-purple-500 mb-1" />
                         </div>
                     </div>
@@ -542,7 +542,7 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
                                         <span className="font-bold text-gray-300 text-lg w-4">{i + 1}</span>
                                         <div>
                                             <div className="font-bold text-sm text-gray-800 line-clamp-1">{a.title}</div>
-                                            <div className="text-xs text-gray-500">{a.category} • {new Date(a.publishedAt).toLocaleDateString()}</div>
+                                            <div className="text-xs text-gray-500">{a.category} • {new Date(a.publishedAt).toLocaleDateString('en-GB')}</div>
                                         </div>
                                     </div>
                                     <div className="text-sm font-bold text-brand-dark">{a.views} views</div>
@@ -595,7 +595,7 @@ const CMS: React.FC<CMSProps> = ({ articles, setArticles, categories, setCategor
                     <tr key={item.id} className="border-b hover:bg-gray-50">
                       <td className="p-4 font-medium">{item.title}</td>
                       {activeView === 'articles' && <td className="p-4 text-sm text-gray-600">{item.category}</td>}
-                      <td className="p-4 text-sm text-gray-500">{new Date(item.publishedAt).toLocaleDateString()}</td>
+                      <td className="p-4 text-sm text-gray-500">{new Date(item.publishedAt).toLocaleDateString('en-GB')}</td>
                       <td className="p-4 space-x-2">
                           <button onClick={() => handleEditArticle(item)} title="Edit" className="p-1 hover:text-blue-600 transition"><Edit className="w-4 h-4"/></button>
                           <button onClick={() => handleDeleteArticle(item.id)} title="Delete" className="p-1 hover:text-red-600 transition"><Trash2 className="w-4 h-4"/></button>
