@@ -63,7 +63,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'standard'
              <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
              <span className="flex items-center">
                <Clock className="w-3 h-3 mr-2" />
-               {new Date(article.publishedAt).toLocaleDateString('de-DE')}
+               {new Date(article.publishedAt).toLocaleDateString()}
              </span>
              <div className="ml-auto hidden md:flex items-center text-white group-hover:translate-x-2 transition-transform duration-300">
                 {t('article.read_story')} <ArrowUpRight className="ml-2 w-4 h-4" />
@@ -102,7 +102,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'standard'
       
       <div className="flex flex-col flex-grow p-6 relative">
         <div className="mb-4 flex items-center text-[10px] font-bold text-gray-400 uppercase tracking-wider space-x-2">
-           <span>{new Date(article.publishedAt).toLocaleDateString('de-DE')}</span>
+           <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
            <span className="w-px h-3 bg-gray-300"></span>
            <span className="text-brand-copper">{article.readTime ? Math.ceil(article.readTime / 60) : 5} min read</span>
         </div>
