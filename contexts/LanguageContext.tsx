@@ -23,7 +23,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.submit_story': 'Submit a Story',
     'section.top_story': 'Top Story',
     'section.latest_news': 'Latest Industry News',
-    'section.trust_title': 'Deeply Rooted in Rhein-Neckar',
+    'section.trust_title': 'Deeply Rooted in the Rhein-Neckar Area',
     'section.trust_text': 'We don\'t just report on the industry; we are part of the local ecosystem. Connecting businesses in Mannheim, Heidelberg, Ludwigshafen, and beyond.',
     'section.explore_categories': 'Explore Topics',
     'newsletter.title': 'Stay Informed. No Spam.',
@@ -51,8 +51,9 @@ const translations: Record<Language, Record<string, string>> = {
     'directory.search_placeholder': 'Search by name or city...',
     'directory.filter_all': 'All',
     
-    // Category Translations (Keys match the German data strings)
+    // Category Translations
     'cat.Branchen-News': 'Industry News',
+    'cat.Ratgeber & Tipps': 'Guides & Tips',
     'cat.Betriebs-Features': 'Company Features',
     'cat.Personal & Karriere': 'HR & Careers',
     'cat.Technologie': 'Technology',
@@ -73,7 +74,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.submit_story': 'Story einreichen',
     'section.top_story': 'Top Story',
     'section.latest_news': 'Neueste Branchennachrichten',
-    'section.trust_title': 'Tief verwurzelt in Rhein-Neckar',
+    'section.trust_title': 'Tief verwurzelt im Rhein-Neckar-Gebiet',
     'section.trust_text': 'Wir berichten nicht nur über die Branche; wir sind Teil des lokalen Ökosystems. Wir verbinden Unternehmen in Mannheim, Heidelberg, Ludwigshafen und darüber hinaus.',
     'section.explore_categories': 'Themen Entdecken',
     'newsletter.title': 'Informiert bleiben. Kein Spam.',
@@ -103,6 +104,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Category Translations
     'cat.Branchen-News': 'Branchen-News',
+    'cat.Ratgeber & Tipps': 'Ratgeber & Tipps',
     'cat.Betriebs-Features': 'Betriebs-Features',
     'cat.Personal & Karriere': 'Personal & Karriere',
     'cat.Technologie': 'Technologie',
@@ -122,7 +124,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.read_latest': 'Lire les dernières nouvelles',
     'hero.submit_story': 'Soumettre une histoire',
     'section.top_story': 'À la une',
-    'section.latest_news': 'Dernières nouvelles de l\'industrie',
+    'section.latest_news': 'Dernières nouvelles de l\'industry',
     'section.trust_title': 'Profondément enraciné',
     'section.trust_text': 'Nous connectons les entreprises à Mannheim, Heidelberg, Ludwigshafen et au-delà.',
     'section.explore_categories': 'Explorer les sujets',
@@ -153,6 +155,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Category Translations
     'cat.Branchen-News': 'Actualités de l\'industrie',
+    'cat.Ratgeber & Tipps': 'Guides et conseils',
     'cat.Betriebs-Features': 'Fonctionnalités de l\'entreprise',
     'cat.Personal & Karriere': 'RH et carrières',
     'cat.Technologie': 'Technologie',
@@ -203,6 +206,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Category Translations
     'cat.Branchen-News': 'Notizie del settore',
+    'cat.Ratgeber & Tipps': 'Guide e consigli',
     'cat.Betriebs-Features': 'Caratteristiche aziendali',
     'cat.Personal & Karriere': 'Risorse umane e carriera',
     'cat.Technologie': 'Tecnologia',
@@ -253,6 +257,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Category Translations
     'cat.Branchen-News': 'Noticias de la industria',
+    'cat.Ratgeber & Tipps': 'Guías y consejos',
     'cat.Betriebs-Features': 'Características de la empresa',
     'cat.Personal & Karriere': 'Recursos humanos y carreras',
     'cat.Technologie': 'Tecnología',
@@ -267,7 +272,6 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [language, setLanguage] = useState<Language>('de');
 
   const t = (key: string): string => {
-    // If key starts with 'cat.' check specific category translation, else generic
     return translations[language][key] || translations['en'][key] || key;
   };
 

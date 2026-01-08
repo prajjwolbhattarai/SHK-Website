@@ -291,16 +291,9 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
                 <MapPin className="w-6 h-6 md:w-8 md:h-8 text-brand-copper" />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-display font-bold text-brand-dark mb-4 md:mb-6">{t('section.trust_title')}</h2>
-                <p className="text-brand-steel text-base md:text-lg max-w-2xl mx-auto mb-10 md:mb-16 leading-relaxed">
+                <p className="text-brand-steel text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
                 {t('section.trust_text')}
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 opacity-50 grayscale mix-blend-multiply">
-                    {['HANDWERK PRO', 'SHK VERBAND', 'IHK RHEIN-NECKAR', 'ENERGIE SÜD'].map((logo, i) => (
-                    <div key={i} className="flex items-center justify-center font-display font-black text-xl md:text-2xl text-gray-300 border-2 border-dashed border-gray-200 p-6 md:p-8 rounded-sm hover:border-brand-copper hover:text-brand-copper hover:opacity-100 transition-all cursor-default">
-                        {logo}
-                    </div>
-                    ))}
-                </div>
             </div>
             </section>
         )}
@@ -369,7 +362,7 @@ const Magazine: React.FC<MagazineProps> = ({ articles, categories }) => {
         </section>
       </main>
 
-      <Footer categories={categories} onCategoryClick={handleCategoryClick} />
+      <Footer categories={categories} />
     </div>
   );
 };
